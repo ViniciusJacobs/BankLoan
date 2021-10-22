@@ -51,7 +51,7 @@ df_bank_train <-  janitor::clean_names(df_bank_train)
 
 ##### Info dos dados:
 
-##### Foram observadas 100.514 observações e um conjunto de 19 variáveis.
+##### O o dataframe tem 100.514 observações e um conjunto de 19 variáveis.
 
 ##### A variável target para esse estudo será (loan\_status).
 
