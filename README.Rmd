@@ -11,25 +11,77 @@ knitr::opts_chunk$set(
 )
 ```
 
-# BankLoan
+# Análise de Crédito
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of BankLoan is to ...
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
 
-```{r cars}
-summary(cars)
+##### Pacotes utilizados na análise
+```{r message=FALSE}
+library(odbc)
+library(tidyverse)
+library(questionr)
+library(knitr)
+
+
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/master/examples>.
 
-You can also embed plots, for example:
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r include=FALSE}
+con <- dbConnect(odbc(),
+                 Driver = "ODBC Driver 17 for SQL Server",
+                 Server = "VINIPC",
+                 Database = "projetobank",
+                 UID = "sa",
+                 PWD = '2510@vini',
+                 Port = 8070)
+
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub.
+
+##### Estabelece a conexão com o banco de dados SQL Server 2017, para extração dos dados. 
+
+```{r eval = FALSE}
+con <- dbConnect(odbc(),
+                 Driver = "ODBC Driver 17 for SQL Server",
+                 Server = "##",
+                 Database = "projetobank",
+                 UID = "##",
+                 PWD = '##',
+                 Port ='##')
+```
+
+
+##### Carregando os dados do banco pro R. 
+
+```{r}
+
+df_bank_train <- dbGetQuery(con, 'SELECT * FROM bank_test')
+
+```
+
+##### Ajustando os nomes das variáveis
+```{r}
+
+df_bank_train <-  janitor::clean_names(df_bank_train)
+
+```
+
+##### Info dos dados
+```{r}
+
+glimpse(df_bank_train)
+```
+
+##### Existem dados faltantes no conjunto de dados? 
+```{r}
+nas <- freq.na(df_bank_train)
+kable(nas)
+```
+
+
+
+
