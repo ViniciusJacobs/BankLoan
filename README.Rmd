@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r echo=FALSE, out.width= 1000, out.height= 300}
+```{r echo=FALSE, out.width= 800, out.height= 200}
 knitr::include_graphics('imgs/credito.jpg')
 ```
 

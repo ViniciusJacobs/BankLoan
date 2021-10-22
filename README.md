@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<img src="imgs/credito.jpg" width="1000" height="300" />
+<img src="imgs/credito.jpg" width="800" height="200" />
 
 # Análise de Crédito
 
