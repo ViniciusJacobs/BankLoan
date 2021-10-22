@@ -265,7 +265,7 @@ library(knitr)</code></pre>
 <pre class="r"><code>df_bank_train &lt;- df_bank_train %&gt;% 
                  filter(!is.na(loan_id))
 
-questionr::freq.na(df_bank_train)
+freq.na(df_bank_train)
 #&gt;                              missing  %
 #&gt; months_since_last_delinquent   53141 53
 #&gt; credit_score                   19154 19
@@ -286,6 +286,27 @@ questionr::freq.na(df_bank_train)
 #&gt; number_of_open_accounts            0  0
 #&gt; number_of_credit_problems          0  0
 #&gt; current_credit_balance             0  0</code></pre>
+</div>
+<div id="após-esse-filtro-ficamos-com-dados-ausentes-nas-variáveis" class="section level5">
+<h5>Após esse filtro ficamos com dados ausentes nas variáveis</h5>
+<div id="months_since_last_delinquent-meses-desde-a-última-inadimplência" class="section level6">
+<h6>53% months_since_last_delinquent (Meses desde a última inadimplência)</h6>
+</div>
+<div id="credit_score-score-de-crédito" class="section level6">
+<h6>19% credit_score (score de crédito)</h6>
+</div>
+<div id="annual_income-renda-anual" class="section level6">
+<h6>19% annual_income (renda anual)</h6>
+</div>
+<div id="obs.-bankruptcies-falência" class="section level6">
+<h6>204 obs. bankruptcies (falência)</h6>
+</div>
+<div id="obs.-tax_liens-linhas-de-impostos" class="section level6">
+<h6>10 obs. tax_liens (linhas de impostos)</h6>
+</div>
+<div id="obs.-maximum_open_credit-abertura-máxima-de-crédito" class="section level6">
+<h6>2 obs. maximum_open_credit (abertura máxima de crédito)</h6>
+</div>
 </div>
 </div>
 </div>

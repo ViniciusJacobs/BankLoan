@@ -108,7 +108,7 @@ freq.na(df_bank_train)
 df_bank_train <- df_bank_train %>% 
                  filter(!is.na(loan_id))
 
-questionr::freq.na(df_bank_train)
+freq.na(df_bank_train)
 #>                              missing  %
 #> months_since_last_delinquent   53141 53
 #> credit_score                   19154 19
@@ -130,3 +130,17 @@ questionr::freq.na(df_bank_train)
 #> number_of_credit_problems          0  0
 #> current_credit_balance             0  0
 ```
+
+##### Após esse filtro ficamos com dados ausentes nas variáveis
+
+###### 53% months\_since\_last\_delinquent (Meses desde a última inadimplência)
+
+###### 19% credit\_score (score de crédito)
+
+###### 19% annual\_income (renda anual)
+
+###### 204 obs. bankruptcies (falência)
+
+###### 10 obs. tax\_liens (linhas de impostos)
+
+###### 2 obs. maximum\_open\_credit (abertura máxima de crédito)
