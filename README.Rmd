@@ -59,7 +59,7 @@ con <- dbConnect(odbc(),
 
 ```{r}
 
-df_bank_train <- dbGetQuery(con, 'SELECT * FROM bank_test')
+df_bank_train <- dbGetQuery(con, 'SELECT * FROM bank_train')
 
 ```
 
