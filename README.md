@@ -1,12 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<img src="imgs/credito.jpg" width="1000" height="300" />
+
 # Análise de Crédito
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-#### O objetivo desse estudo consiste na análise dos dados para concessão de empréstimo.
+#### O objetivo desse estudo consiste na análise dos dados históricos de empréstimos e na elaboração de um modelo de classificação para concessão de crédito.
+
+#### Os dados foram coletados no site: <https://www.kaggle.com/zaurbegiev/my-dataset> e armazenados no banco de dados SQL Server 2017.
 
 ##### Etapas:
 
@@ -45,7 +49,11 @@ df_bank_train <- dbGetQuery(con, 'SELECT * FROM bank_train')
 df_bank_train <-  janitor::clean_names(df_bank_train)
 ```
 
-##### Info dos dados
+##### Info dos dados:
+
+##### Foram observadas 100.514 observações e um conjunto de 19 variáveis.
+
+##### A variável target para esse estudo será (loan\_status).
 
 ``` r
 glimpse(df_bank_train)
