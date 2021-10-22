@@ -172,6 +172,14 @@ pre code {
 <h1>Análise de Crédito</h1>
 <!-- badges: start -->
 <!-- badges: end -->
+<div id="o-objetivo-desse-estudo-consiste-na-análise-dos-dados-para-concessão-de-empréstimo." class="section level4">
+<h4>O objetivo desse estudo consiste na análise dos dados para concessão de empréstimo.</h4>
+<div id="etapas" class="section level5">
+<h5>Etapas:</h5>
+</div>
+<div id="análise-exploratória-do-conjunto-de-dados." class="section level5">
+<h5>1 - Análise exploratória do conjunto de dados.</h5>
+</div>
 <div id="pacotes-utilizados-na-análise" class="section level5">
 <h5>Pacotes utilizados na análise</h5>
 <pre class="r"><code>library(odbc)
@@ -179,8 +187,8 @@ library(tidyverse)
 library(questionr)
 library(knitr)</code></pre>
 </div>
-<div id="estabelece-a-conexão-com-o-banco-de-dados-sql-server-2017-para-extração-dos-dados." class="section level5">
-<h5>Estabelece a conexão com o banco de dados SQL Server 2017, para extração dos dados.</h5>
+<div id="estabelecendo-conexão-com-o-banco-de-dados-sql-server-2017-para-extraçãoleitura-dos-dados." class="section level5">
+<h5>Estabelecendo conexão com o banco de dados SQL Server 2017, para extração/leitura dos dados.</h5>
 <pre class="r"><code>con &lt;- dbConnect(odbc(),
                  Driver = &quot;ODBC Driver 17 for SQL Server&quot;,
                  Server = &quot;##&quot;,
@@ -224,114 +232,61 @@ library(knitr)</code></pre>
 </div>
 <div id="existem-dados-faltantes-no-conjunto-de-dados" class="section level5">
 <h5>Existem dados faltantes no conjunto de dados?</h5>
-<pre class="r"><code>nas &lt;- freq.na(df_bank_train)
-kable(nas)</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th align="left"></th>
-<th align="right">missing</th>
-<th align="right">%</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">months_since_last_delinquent</td>
-<td align="right">53655</td>
-<td align="right">53</td>
-</tr>
-<tr class="even">
-<td align="left">credit_score</td>
-<td align="right">19668</td>
-<td align="right">20</td>
-</tr>
-<tr class="odd">
-<td align="left">annual_income</td>
-<td align="right">19668</td>
-<td align="right">20</td>
-</tr>
-<tr class="even">
-<td align="left">bankruptcies</td>
-<td align="right">718</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">tax_liens</td>
-<td align="right">524</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">maximum_open_credit</td>
-<td align="right">516</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">loan_id</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">customer_id</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">loan_status</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">current_loan_amount</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">term</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">years_in_current_job</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">home_ownership</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">purpose</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">monthly_debt</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">years_of_credit_history</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">number_of_open_accounts</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="even">
-<td align="left">number_of_credit_problems</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-<tr class="odd">
-<td align="left">current_credit_balance</td>
-<td align="right">514</td>
-<td align="right">1</td>
-</tr>
-</tbody>
-</table>
+<pre class="r"><code>freq.na(df_bank_train)
+#&gt;                              missing  %
+#&gt; months_since_last_delinquent   53655 53
+#&gt; credit_score                   19668 20
+#&gt; annual_income                  19668 20
+#&gt; bankruptcies                     718  1
+#&gt; tax_liens                        524  1
+#&gt; maximum_open_credit              516  1
+#&gt; loan_id                          514  1
+#&gt; customer_id                      514  1
+#&gt; loan_status                      514  1
+#&gt; current_loan_amount              514  1
+#&gt; term                             514  1
+#&gt; years_in_current_job             514  1
+#&gt; home_ownership                   514  1
+#&gt; purpose                          514  1
+#&gt; monthly_debt                     514  1
+#&gt; years_of_credit_history          514  1
+#&gt; number_of_open_accounts          514  1
+#&gt; number_of_credit_problems        514  1
+#&gt; current_credit_balance           514  1</code></pre>
+</div>
+<div id="como-a-maior-parte-das-variáveis-apresenta-514-dados-faltantes-verifiquei-se-são-linhas-inteiras-de-na." class="section level5">
+<h5>Como a maior parte das variáveis apresenta 514 dados faltantes, verifiquei se são linhas inteiras de NA.</h5>
+</div>
+<div id="visto-que-o-teste-resultou-em-um-conjunto-de-dados-faltantes-uniformes-optei-pelo-descarte." class="section level5">
+<h5>Visto que o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte.</h5>
+</div>
+<div id="a-tabela-abaixo-representa-o-novo-conjunto-de-dados." class="section level5">
+<h5>A tabela abaixo representa o novo conjunto de dados.</h5>
+<pre class="r"><code>df_bank_train &lt;- df_bank_train %&gt;% 
+                 filter(!is.na(loan_id))
+
+questionr::freq.na(df_bank_train)
+#&gt;                              missing  %
+#&gt; months_since_last_delinquent   53141 53
+#&gt; credit_score                   19154 19
+#&gt; annual_income                  19154 19
+#&gt; bankruptcies                     204  0
+#&gt; tax_liens                         10  0
+#&gt; maximum_open_credit                2  0
+#&gt; loan_id                            0  0
+#&gt; customer_id                        0  0
+#&gt; loan_status                        0  0
+#&gt; current_loan_amount                0  0
+#&gt; term                               0  0
+#&gt; years_in_current_job               0  0
+#&gt; home_ownership                     0  0
+#&gt; purpose                            0  0
+#&gt; monthly_debt                       0  0
+#&gt; years_of_credit_history            0  0
+#&gt; number_of_open_accounts            0  0
+#&gt; number_of_credit_problems          0  0
+#&gt; current_credit_balance             0  0</code></pre>
+</div>
 </div>
 </div>
 

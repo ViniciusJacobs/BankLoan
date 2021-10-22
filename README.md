@@ -6,6 +6,12 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+#### O objetivo desse estudo consiste na análise dos dados para concessão de empréstimo.
+
+##### Etapas:
+
+##### 1 - Análise exploratória do conjunto de dados.
+
 ##### Pacotes utilizados na análise
 
 ``` r
@@ -15,7 +21,7 @@ library(questionr)
 library(knitr)
 ```
 
-##### Estabelece a conexão com o banco de dados SQL Server 2017, para extração dos dados.
+##### Estabelecendo conexão com o banco de dados SQL Server 2017, para extração/leitura dos dados.
 
 ``` r
 con <- dbConnect(odbc(),
@@ -69,28 +75,58 @@ glimpse(df_bank_train)
 ##### Existem dados faltantes no conjunto de dados?
 
 ``` r
-nas <- freq.na(df_bank_train)
-kable(nas)
+freq.na(df_bank_train)
+#>                              missing  %
+#> months_since_last_delinquent   53655 53
+#> credit_score                   19668 20
+#> annual_income                  19668 20
+#> bankruptcies                     718  1
+#> tax_liens                        524  1
+#> maximum_open_credit              516  1
+#> loan_id                          514  1
+#> customer_id                      514  1
+#> loan_status                      514  1
+#> current_loan_amount              514  1
+#> term                             514  1
+#> years_in_current_job             514  1
+#> home_ownership                   514  1
+#> purpose                          514  1
+#> monthly_debt                     514  1
+#> years_of_credit_history          514  1
+#> number_of_open_accounts          514  1
+#> number_of_credit_problems        514  1
+#> current_credit_balance           514  1
 ```
 
-|                                 | missing |   % |
-|:--------------------------------|--------:|----:|
-| months\_since\_last\_delinquent |   53655 |  53 |
-| credit\_score                   |   19668 |  20 |
-| annual\_income                  |   19668 |  20 |
-| bankruptcies                    |     718 |   1 |
-| tax\_liens                      |     524 |   1 |
-| maximum\_open\_credit           |     516 |   1 |
-| loan\_id                        |     514 |   1 |
-| customer\_id                    |     514 |   1 |
-| loan\_status                    |     514 |   1 |
-| current\_loan\_amount           |     514 |   1 |
-| term                            |     514 |   1 |
-| years\_in\_current\_job         |     514 |   1 |
-| home\_ownership                 |     514 |   1 |
-| purpose                         |     514 |   1 |
-| monthly\_debt                   |     514 |   1 |
-| years\_of\_credit\_history      |     514 |   1 |
-| number\_of\_open\_accounts      |     514 |   1 |
-| number\_of\_credit\_problems    |     514 |   1 |
-| current\_credit\_balance        |     514 |   1 |
+##### Como a maior parte das variáveis apresenta 514 dados faltantes, verifiquei se são linhas inteiras de NA.
+
+##### Visto que o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte.
+
+##### A tabela abaixo representa o novo conjunto de dados.
+
+``` r
+df_bank_train <- df_bank_train %>% 
+                 filter(!is.na(loan_id))
+
+questionr::freq.na(df_bank_train)
+#>                              missing  %
+#> months_since_last_delinquent   53141 53
+#> credit_score                   19154 19
+#> annual_income                  19154 19
+#> bankruptcies                     204  0
+#> tax_liens                         10  0
+#> maximum_open_credit                2  0
+#> loan_id                            0  0
+#> customer_id                        0  0
+#> loan_status                        0  0
+#> current_loan_amount                0  0
+#> term                               0  0
+#> years_in_current_job               0  0
+#> home_ownership                     0  0
+#> purpose                            0  0
+#> monthly_debt                       0  0
+#> years_of_credit_history            0  0
+#> number_of_open_accounts            0  0
+#> number_of_credit_problems          0  0
+#> current_credit_balance             0  0
+```

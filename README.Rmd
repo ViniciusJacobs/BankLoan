@@ -15,7 +15,9 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 <!-- badges: end -->
-
+#### O objetivo desse estudo consiste na análise dos dados para concessão de empréstimo. 
+##### Etapas: 
+##### 1 - Análise exploratória do conjunto de dados. 
 
 
 ##### Pacotes utilizados na análise
@@ -42,7 +44,7 @@ con <- dbConnect(odbc(),
 ```
 
 
-##### Estabelece a conexão com o banco de dados SQL Server 2017, para extração dos dados. 
+##### Estabelecendo conexão com o banco de dados SQL Server 2017, para extração/leitura dos dados. 
 
 ```{r eval = FALSE}
 con <- dbConnect(odbc(),
@@ -78,10 +80,26 @@ glimpse(df_bank_train)
 
 ##### Existem dados faltantes no conjunto de dados? 
 ```{r}
-nas <- freq.na(df_bank_train)
-kable(nas)
+freq.na(df_bank_train)
+
 ```
 
+##### Como a maior parte das variáveis apresenta 514 dados faltantes, verifiquei se são linhas inteiras de NA. 
+##### Visto que o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte. 
+##### A tabela abaixo representa o novo conjunto de dados.   
+```{r, include=FALSE}
+questionr::freq.na(df_bank_train %>% 
+  filter(is.na(loan_id)))
 
 
+```
+
+ 
+
+```{r}
+df_bank_train <- df_bank_train %>% 
+                 filter(!is.na(loan_id))
+
+questionr::freq.na(df_bank_train)
+```
 
