@@ -272,3 +272,53 @@ g2
 
 
 
+
+##### Inspecionando a variável (renda anual)
+```{r, include=FALSE}
+
+g_annual <- df_bank_train %>% 
+  ggplot()+
+  aes(y = annual_income)+
+  geom_boxplot()+
+  labs(
+    x = "Renda Anual",
+    y = "valores",
+    title = "Distribuição do Renda Anual"
+  ) +
+  theme_bw()
+
+g_annual_inc <- df_bank_train %>%
+  filter(annual_income<2000000) %>% 
+  ggplot()+
+  aes(y = annual_income)+
+  geom_boxplot(fill ="#114642")+
+  labs(
+    x = "Renda Anual",
+    y = "valores",
+    title = "Dist(remov. os outliers +2MM)"
+  ) +
+  theme_bw()
+
+
+g3 <- g_annual  + g_annual_inc
+
+```
+
+```{r}
+g3
+```
+
+###### Optei por substituir as variáveis faltantes pela média em ambos casos, no entanto irei avaliar futuramente com a construção do modelo a necessidade de trabalhar melhor essas variáveis.  
+
+```{r}
+df_bank_train$credit_score <- df_bank_train$credit_score %>% 
+                              coalesce(mean( df_bank_train$credit_score, na.rm = TRUE))
+
+df_bank_train$annual_income <- df_bank_train$annual_income %>% 
+                              coalesce(mean( df_bank_train$annual_income, na.rm = TRUE))
+```
+
+```{r}
+freq.na(df_bank_train)
+```
+

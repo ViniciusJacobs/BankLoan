@@ -277,3 +277,46 @@ g2
 ```
 
 <img src="README_files/figure-gfm/unnamed-chunk-20-1.png" width="800" />
+
+##### Inspecionando a variável (renda anual)
+
+``` r
+g3
+#> Warning: Removed 19154 rows containing non-finite values (stat_boxplot).
+```
+
+![](README_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
+###### Optei por substituir as variáveis faltantes pela média em ambos casos, no entanto irei avaliar futuramente com a construção do modelo a necessidade de trabalhar melhor essas variáveis.
+
+``` r
+df_bank_train$credit_score <- df_bank_train$credit_score %>% 
+                              coalesce(mean( df_bank_train$credit_score, na.rm = TRUE))
+
+df_bank_train$annual_income <- df_bank_train$annual_income %>% 
+                              coalesce(mean( df_bank_train$annual_income, na.rm = TRUE))
+```
+
+``` r
+freq.na(df_bank_train)
+#>                              missing  %
+#> months_since_last_delinquent   53141 53
+#> loan_id                            0  0
+#> customer_id                        0  0
+#> loan_status                        0  0
+#> current_loan_amount                0  0
+#> term                               0  0
+#> credit_score                       0  0
+#> annual_income                      0  0
+#> years_in_current_job               0  0
+#> home_ownership                     0  0
+#> purpose                            0  0
+#> monthly_debt                       0  0
+#> years_of_credit_history            0  0
+#> number_of_open_accounts            0  0
+#> number_of_credit_problems          0  0
+#> current_credit_balance             0  0
+#> maximum_open_credit                0  0
+#> bankruptcies                       0  0
+#> tax_liens                          0  0
+```
