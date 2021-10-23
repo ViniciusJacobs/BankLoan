@@ -108,7 +108,7 @@ freq.na(df_bank_train)
 
 ##### Como a maior parte das variáveis apresenta 514 dados faltantes, verifiquei se são linhas inteiras de NA.
 
-##### Visto que o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte.
+##### Visto que, o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte.
 
 ##### A tabela abaixo representa o novo conjunto de dados.
 
@@ -139,7 +139,7 @@ freq.na(df_bank_train)
 #> current_credit_balance             0  0
 ```
 
-##### Após esse filtro ficamos com dados ausentes nas variáveis
+##### Após esse filtro ficamos com dados ausentes nas variáveis:
 
 ###### 53% months\_since\_last\_delinquent (Meses desde a última inadimplência)
 
@@ -152,3 +152,42 @@ freq.na(df_bank_train)
 ###### 10 obs. tax\_liens (linhas de impostos)
 
 ###### 2 obs. maximum\_open\_credit (abertura máxima de crédito)
+
+###### 204 obs. bankruptcies (falência)
+
+###### Conforme análise da tabela de frequência relativa, foi verificado que a distribuiçao % se comporta como nas faixas \[0,1,2,3,4,5\] entre (22,74% - 28,57%) de Charge Off e (77.26 % - 71.43 %). Devido a relação com a variável target e ao baixo número de observações, entendo que não vai influenciar no resultado do modelo a imputação pela faixa com mais observações da variável bankruptcies (0).
+
+``` r
+  df_bank_train %>%
+  group_by(bankruptcies, loan_status) %>% 
+  summarise(qnt = n()) %>% 
+  complete(bankruptcies, fill = list(n = 0)) %>% 
+  group_by(bankruptcies) %>% 
+  mutate(freq = paste(round(qnt / sum(qnt),4)*100,'%'))
+#> `summarise()` has grouped output by 'bankruptcies'. You can override using the `.groups` argument.
+#> # A tibble: 16 x 4
+#> # Groups:   bankruptcies [9]
+#>    bankruptcies loan_status   qnt freq   
+#>           <dbl> <chr>       <int> <chr>  
+#>  1            0 Charged Off 20183 22.74 %
+#>  2            0 Fully Paid  68591 77.26 %
+#>  3            1 Charged Off  2287 21.83 %
+#>  4            1 Fully Paid   8188 78.17 %
+#>  5            2 Charged Off    92 22.06 %
+#>  6            2 Fully Paid    325 77.94 %
+#>  7            3 Charged Off    18 19.35 %
+#>  8            3 Fully Paid     75 80.65 %
+#>  9            4 Charged Off     7 25.93 %
+#> 10            4 Fully Paid     20 74.07 %
+#> 11            5 Charged Off     2 28.57 %
+#> 12            5 Fully Paid      5 71.43 %
+#> 13            6 Fully Paid      2 100 %  
+#> 14            7 Fully Paid      1 100 %  
+#> 15           NA Charged Off    50 24.51 %
+#> 16           NA Fully Paid    154 75.49 %
+```
+
+``` r
+  df_bank_train$bankruptcies <- df_bank_train$bankruptcies %>% 
+  coalesce(0)
+```

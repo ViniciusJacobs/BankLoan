@@ -97,7 +97,7 @@ freq.na(df_bank_train)
 ```
 
 ##### Como a maior parte das variáveis apresenta 514 dados faltantes, verifiquei se são linhas inteiras de NA. 
-##### Visto que o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte. 
+##### Visto que, o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte. 
 ##### A tabela abaixo representa o novo conjunto de dados.   
 ```{r, include=FALSE}
 questionr::freq.na(df_bank_train %>% 
@@ -116,7 +116,7 @@ freq.na(df_bank_train)
 ```
 
 
-##### Após esse filtro ficamos com dados ausentes nas variáveis 
+##### Após esse filtro ficamos com dados ausentes nas variáveis: 
 ###### 53% months_since_last_delinquent (Meses desde a última inadimplência)
 ###### 19% credit_score (score de crédito)
 ###### 19% annual_income (renda anual)
@@ -127,9 +127,23 @@ freq.na(df_bank_train)
 
 
 
+###### 204 obs. bankruptcies (falência)
+###### Conforme análise da tabela de frequência relativa, foi verificado que a distribuiçao % se comporta como nas faixas [0,1,2,3,4,5] entre (22,74% - 28,57%) de Charge Off e (77.26 % - 71.43 %). Devido a relação com a variável target e ao baixo número de observações, entendo que não vai influenciar no resultado do modelo a imputação pela faixa com mais observações da variável bankruptcies (0).  
 
+```{r}
+  df_bank_train %>%
+  group_by(bankruptcies, loan_status) %>% 
+  summarise(qnt = n()) %>% 
+  complete(bankruptcies, fill = list(n = 0)) %>% 
+  group_by(bankruptcies) %>% 
+  mutate(freq = paste(round(qnt / sum(qnt),4)*100,'%'))
 
+```
 
+```{r}
+  df_bank_train$bankruptcies <- df_bank_train$bankruptcies %>% 
+  coalesce(0)
+```
 
 
 

@@ -268,7 +268,7 @@ library(knitr)</code></pre>
 <h5>Como a maior parte das variáveis apresenta 514 dados faltantes, verifiquei se são linhas inteiras de NA.</h5>
 </div>
 <div id="visto-que-o-teste-resultou-em-um-conjunto-de-dados-faltantes-uniformes-optei-pelo-descarte." class="section level5">
-<h5>Visto que o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte.</h5>
+<h5>Visto que, o teste resultou em um conjunto de dados faltantes uniformes, optei pelo descarte.</h5>
 </div>
 <div id="a-tabela-abaixo-representa-o-novo-conjunto-de-dados." class="section level5">
 <h5>A tabela abaixo representa o novo conjunto de dados.</h5>
@@ -298,7 +298,7 @@ freq.na(df_bank_train)
 #&gt; current_credit_balance             0  0</code></pre>
 </div>
 <div id="após-esse-filtro-ficamos-com-dados-ausentes-nas-variáveis" class="section level5">
-<h5>Após esse filtro ficamos com dados ausentes nas variáveis</h5>
+<h5>Após esse filtro ficamos com dados ausentes nas variáveis:</h5>
 <div id="months_since_last_delinquent-meses-desde-a-última-inadimplência" class="section level6">
 <h6>53% months_since_last_delinquent (Meses desde a última inadimplência)</h6>
 </div>
@@ -316,6 +316,41 @@ freq.na(df_bank_train)
 </div>
 <div id="obs.-maximum_open_credit-abertura-máxima-de-crédito" class="section level6">
 <h6>2 obs. maximum_open_credit (abertura máxima de crédito)</h6>
+</div>
+<div id="obs.-bankruptcies-falência-1" class="section level6">
+<h6>204 obs. bankruptcies (falência)</h6>
+</div>
+<div id="conforme-análise-da-tabela-de-frequência-relativa-foi-verificado-que-a-distribuiçao-se-comporta-como-nas-faixas-012345-entre-2274---2857-de-charge-off-e-77.26---71.43-.-devido-a-relação-com-a-variável-target-e-ao-baixo-número-de-observações-entendo-que-não-vai-influenciar-no-resultado-do-modelo-a-imputação-pela-faixa-com-mais-observações-da-variável-bankruptcies-0." class="section level6">
+<h6>Conforme análise da tabela de frequência relativa, foi verificado que a distribuiçao % se comporta como nas faixas [0,1,2,3,4,5] entre (22,74% - 28,57%) de Charge Off e (77.26 % - 71.43 %). Devido a relação com a variável target e ao baixo número de observações, entendo que não vai influenciar no resultado do modelo a imputação pela faixa com mais observações da variável bankruptcies (0).</h6>
+<pre class="r"><code>  df_bank_train %&gt;%
+  group_by(bankruptcies, loan_status) %&gt;% 
+  summarise(qnt = n()) %&gt;% 
+  complete(bankruptcies, fill = list(n = 0)) %&gt;% 
+  group_by(bankruptcies) %&gt;% 
+  mutate(freq = paste(round(qnt / sum(qnt),4)*100,&#39;%&#39;))
+#&gt; `summarise()` has grouped output by &#39;bankruptcies&#39;. You can override using the `.groups` argument.
+#&gt; # A tibble: 16 x 4
+#&gt; # Groups:   bankruptcies [9]
+#&gt;    bankruptcies loan_status   qnt freq   
+#&gt;           &lt;dbl&gt; &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;  
+#&gt;  1            0 Charged Off 20183 22.74 %
+#&gt;  2            0 Fully Paid  68591 77.26 %
+#&gt;  3            1 Charged Off  2287 21.83 %
+#&gt;  4            1 Fully Paid   8188 78.17 %
+#&gt;  5            2 Charged Off    92 22.06 %
+#&gt;  6            2 Fully Paid    325 77.94 %
+#&gt;  7            3 Charged Off    18 19.35 %
+#&gt;  8            3 Fully Paid     75 80.65 %
+#&gt;  9            4 Charged Off     7 25.93 %
+#&gt; 10            4 Fully Paid     20 74.07 %
+#&gt; 11            5 Charged Off     2 28.57 %
+#&gt; 12            5 Fully Paid      5 71.43 %
+#&gt; 13            6 Fully Paid      2 100 %  
+#&gt; 14            7 Fully Paid      1 100 %  
+#&gt; 15           NA Charged Off    50 24.51 %
+#&gt; 16           NA Fully Paid    154 75.49 %</code></pre>
+<pre class="r"><code>  df_bank_train$bankruptcies &lt;- df_bank_train$bankruptcies %&gt;% 
+  coalesce(0)</code></pre>
 </div>
 </div>
 </div>
