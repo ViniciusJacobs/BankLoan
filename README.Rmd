@@ -37,6 +37,7 @@ library(tidyverse)
 library(questionr)
 library(knitr)
 library(patchwork)
+library(plotly)
 
 ```
 
@@ -121,7 +122,7 @@ freq.na(df_bank_train)
 ###### 19% credit_score (score de crédito)
 ###### 19% annual_income (renda anual)
 ###### 204 obs. bankruptcies (falência)
-###### 10 obs. tax_liens (linhas de impostos)
+###### 10 obs. tax_liens (registro de automóveis)
 ###### 2 obs. maximum_open_credit (abertura máxima de crédito)
 
 
@@ -165,10 +166,10 @@ freq.na(df_bank_train)
 
 ##### O gráfico abaixo mostra a curva de densidade da váriavel e de um possível ajuste dos dados. 
 
-```{r message=FALSE, warning=FALSE, echo=FALSE}
+```{r message=FALSE, warning=FALSE, echo=FALSE, out.width= 800}
 a <- df_bank_train %>% 
     ggplot() +
-      aes(x = maximum_open_credit) +
+      aes(x = maximum_open_credit/1000) +
     geom_density(adjust = 2.8, fill = "#114642") +
       scale_x_continuous(trans = "log") +
        labs(
@@ -180,7 +181,7 @@ a <- df_bank_train %>%
 
  b <-  df_bank_train %>% 
     ggplot() +
-      aes(x = maximum_open_credit) +
+      aes(x = maximum_open_credit/1000) +
     geom_density(adjust = 2.8, fill = "#114642") +
       labs(
       x = "Valores",
@@ -193,7 +194,81 @@ b+a
 ```
 
 
+```{r}
+  df_bank_train$maximum_open_credit <- df_bank_train$maximum_open_credit %>% 
+  coalesce(median(df_bank_train$maximum_open_credit, na.rm = TRUE))
+```
 
+
+##### 10 obs. tax_liens (registro de automóveis)
+
+###### A distribuição da variável com relação a variável resposta nos níveis da tax_liens não sofre tanta alteração e o número de observações é baixo. As observações faltantes estão todas no grupo 'Fully Paid'. 
+###### Optei por substituir as variáveis faltantes pelo maior grupo da 'tax_liens' 0. 
+```{r}
+df_bank_train %>%
+  group_by(tax_liens, loan_status) %>%
+  summarise(qnt = n()) %>%
+  complete(tax_liens, fill = list(n = 0)) %>%
+  group_by(tax_liens) %>%
+  mutate(freq = paste(round(qnt / sum(qnt),4)*100,'%'))
+
+
+df_bank_train$tax_liens <- df_bank_train$tax_liens %>% 
+  coalesce(0)
+
+
+```
+
+
+
+
+##### 19% credit_score (score de crédito)
+##### 19% annual_income (renda anual)
+
+
+###### As variáveis que estão faltando em score de crédito também estão faltando na coluna de renda anual. 
+```{r}
+df_bank_train %>% 
+  filter(is.na(credit_score)) %>% 
+  select(credit_score, annual_income) %>% 
+  drop_na(credit_score, annual_income)
+```
+
+
+
+##### Inspecionando a variável (score de crédito)
+```{r, include=FALSE}
+
+g_score_1 <- df_bank_train %>% 
+  ggplot()+
+  aes(y = credit_score)+
+  geom_boxplot()+
+  labs(
+    x = "credit_score",
+    y = "valores",
+    title = "Distribuição do Crédito_Score "
+  ) +
+  theme_bw()
+
+g_score <- df_bank_train %>%
+  filter(credit_score<1000) %>% 
+  ggplot()+
+  aes(y = credit_score)+
+  geom_boxplot(fill ="#114642")+
+  labs(
+    x = "credit_score",
+    y = "valores",
+    title = "Dist (removendo os outliers +1000)"
+  ) +
+  theme_bw()
+
+g2 <- g_score_1 + g_score
+
+```
+
+```{r, out.width= 800}
+g2
+```
 
 
 

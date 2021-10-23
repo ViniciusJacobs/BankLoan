@@ -24,6 +24,7 @@ library(tidyverse)
 library(questionr)
 library(knitr)
 library(patchwork)
+library(plotly)
 ```
 
 ##### Estabelecendo conexão com o banco de dados SQL Server 2017, para extração/leitura dos dados.
@@ -150,7 +151,7 @@ freq.na(df_bank_train)
 
 ###### 204 obs. bankruptcies (falência)
 
-###### 10 obs. tax\_liens (linhas de impostos)
+###### 10 obs. tax\_liens (registro de automóveis)
 
 ###### 2 obs. maximum\_open\_credit (abertura máxima de crédito)
 
@@ -211,4 +212,68 @@ freq.na(df_bank_train)
 
 ##### O gráfico abaixo mostra a curva de densidade da váriavel e de um possível ajuste dos dados.
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+<img src="README_files/figure-gfm/unnamed-chunk-15-1.png" width="800" />
+
+``` r
+  df_bank_train$maximum_open_credit <- df_bank_train$maximum_open_credit %>% 
+  coalesce(median(df_bank_train$maximum_open_credit, na.rm = TRUE))
+```
+
+##### 10 obs. tax\_liens (registro de automóveis)
+
+###### A distribuição da variável com relação a variável resposta nos níveis da tax\_liens não sofre tanta alteração e o número de observações é baixo. As observações faltantes estão todas no grupo ‘Fully Paid’.
+
+###### Optei por substituir as variáveis faltantes pelo maior grupo da ‘tax\_liens’ 0.
+
+``` r
+df_bank_train %>%
+  group_by(tax_liens, loan_status) %>%
+  summarise(qnt = n()) %>%
+  complete(tax_liens, fill = list(n = 0)) %>%
+  group_by(tax_liens) %>%
+  mutate(freq = paste(round(qnt / sum(qnt),4)*100,'%'))
+#> `summarise()` has grouped output by 'tax_liens'. You can override using the `.groups` argument.
+#> # A tibble: 22 x 4
+#> # Groups:   tax_liens [13]
+#>    tax_liens loan_status   qnt freq   
+#>        <dbl> <chr>       <int> <chr>  
+#>  1         0 Charged Off 22150 22.59 %
+#>  2         0 Fully Paid  75912 77.41 %
+#>  3         1 Charged Off   330 24.57 %
+#>  4         1 Fully Paid   1013 75.43 %
+#>  5         2 Charged Off    90 24.06 %
+#>  6         2 Fully Paid    284 75.94 %
+#>  7         3 Charged Off    36 32.43 %
+#>  8         3 Fully Paid     75 67.57 %
+#>  9         4 Charged Off    21 36.21 %
+#> 10         4 Fully Paid     37 63.79 %
+#> # ... with 12 more rows
+
+
+df_bank_train$tax_liens <- df_bank_train$tax_liens %>% 
+  coalesce(0)
+```
+
+##### 19% credit\_score (score de crédito)
+
+##### 19% annual\_income (renda anual)
+
+###### As variáveis que estão faltando em score de crédito também estão faltando na coluna de renda anual.
+
+``` r
+df_bank_train %>% 
+  filter(is.na(credit_score)) %>% 
+  select(credit_score, annual_income) %>% 
+  drop_na(credit_score, annual_income)
+#> [1] credit_score  annual_income
+#> <0 linhas> (ou row.names de comprimento 0)
+```
+
+##### Inspecionando a variável (score de crédito)
+
+``` r
+g2
+#> Warning: Removed 19154 rows containing non-finite values (stat_boxplot).
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-20-1.png" width="800" />
