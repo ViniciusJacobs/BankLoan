@@ -203,45 +203,12 @@ freq.na(df_bank_train)
 
 ###### A média é muito maior que a mediana, visualmente percebemos uma curva assimétrica a direita, com amplitude (0 - 1.539.737.892).
 
-``` r
-  print(paste('Média', round(mean(df_bank_train$maximum_open_credit, na.rm = TRUE),2),sep = ': '))
-#> [1] "Média: 760798.38"
-  print(paste('Mediana',round(median(df_bank_train$maximum_open_credit, na.rm = TRUE),2),sep = ': '))
-#> [1] "Mediana: 467874"
-  print(paste('Desvio Padrão',round(sd(df_bank_train$maximum_open_credit, na.rm = TRUE),2),sep = ': '))
-#> [1] "Desvio Padrão: 8384503.47"
-  print(paste('Máximo',round(max(df_bank_train$maximum_open_credit, na.rm = TRUE),2),sep = ': '))
-#> [1] "Máximo: 1539737892"
-  print(paste('Mínimo',round(min(df_bank_train$maximum_open_credit, na.rm = TRUE),2),sep = ': '))
-#> [1] "Mínimo: 0"
-```
+    #> [1] "Média: 760798.38"
+    #> [1] "Mediana: 467874"
+    #> [1] "Desvio Padrão: 8384503.47"
+    #> [1] "Máximo: 1539737892"
+    #> [1] "Mínimo: 0"
 
 ##### O gráfico abaixo mostra a curva de densidade da váriavel e de um possível ajuste dos dados.
-
-``` r
-a <- df_bank_train %>% 
-    ggplot() +
-      aes(x = maximum_open_credit) +
-    geom_density(adjust = 2.8, fill = "#114642") +
-      scale_x_continuous(trans = "log") +
-       labs(
-      x = "Valores (Log)",
-      y = "Densidade",
-      title = "Abertura de Crédito Máximo (Log)"
-      ) +
-    theme_bw()
-
- b <-  df_bank_train %>% 
-    ggplot() +
-      aes(x = maximum_open_credit) +
-    geom_density(adjust = 2.8, fill = "#114642") +
-      labs(
-      x = "Valores",
-      y = "Densidade",
-      title = "Abertura de Crédito Máximo "
-      ) +
-    theme_bw()
-b+a  
-```
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->

@@ -155,7 +155,7 @@ freq.na(df_bank_train)
 ###### Ao tirar algumas estatísticas e visualizações dessa váriável fica claro o quanto assímetrico é a distribuição. 
 ###### A média é muito maior que a mediana, visualmente percebemos uma curva assimétrica a direita, com amplitude (0 - 1.539.737.892). 
 
-```{r}
+```{r, echo=FALSE}
   print(paste('Média', round(mean(df_bank_train$maximum_open_credit, na.rm = TRUE),2),sep = ': '))
   print(paste('Mediana',round(median(df_bank_train$maximum_open_credit, na.rm = TRUE),2),sep = ': '))
   print(paste('Desvio Padrão',round(sd(df_bank_train$maximum_open_credit, na.rm = TRUE),2),sep = ': '))
@@ -165,7 +165,7 @@ freq.na(df_bank_train)
 
 ##### O gráfico abaixo mostra a curva de densidade da váriavel e de um possível ajuste dos dados. 
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, echo=FALSE}
 a <- df_bank_train %>% 
     ggplot() +
       aes(x = maximum_open_credit) +
